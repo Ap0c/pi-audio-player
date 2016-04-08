@@ -3,17 +3,24 @@
 // ----- Requires ----- //
 
 let express = require('express');
-
+let Omx = require('node-omxplayer');
 
 // ----- Setup ----- //
 
 let app = express();
+let player = Omx();
 
 
 // ----- Routing ----- //
 
-app.get('/', (res, rej) => {
-	res.send('Hello world');
+// Plays the file in omxplayer.
+app.post('/play', (res, rej) => {
+	player.play();
+});
+
+// Pauses the file in omxplayer.
+app.post('/pause', (res, rej) => {
+	player.pause();
 });
 
 

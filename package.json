@@ -9,6 +9,7 @@
   "author": "Ap0c",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "node-omxplayer": "^0.2.3"
   }
 }
