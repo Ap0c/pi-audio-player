@@ -1,0 +1,14 @@
+{
+  "name": "pi-audio-player",
+  "version": "0.1.0",
+  "description": "Network audio file player designed to run on the Raspberry Pi, using omxplayer.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ap0c",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
