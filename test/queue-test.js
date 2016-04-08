@@ -99,4 +99,29 @@ describe('Queue', function () {
 
 	});
 
+	describe('#previous', function () {
+
+		it('should return the previous value in the queue', function () {
+
+			let toAppend = [{ a: 1 }, { b: 2 }];
+			queue.append(toAppend);
+
+			queue.next();
+			let previous = queue.previous();
+			expect(previous).to.eql(toAppend[0]);
+
+		});
+
+		it('should return null at the start of the queue', function () {
+
+			let toAppend = [{ a: 1 }, { b: 2 }];
+			queue.append(toAppend);
+
+			let previous = queue.previous();
+			expect(previous).to.be.null;
+
+		});
+
+	});
+
 });
