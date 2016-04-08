@@ -5,10 +5,14 @@
 let express = require('express');
 let Omx = require('node-omxplayer');
 
+let Queue = require('./queue');
+
+
 // ----- Setup ----- //
 
 let app = express();
 let player = Omx();
+let queue = Queue();
 
 
 // ----- Routing ----- //
@@ -31,6 +35,46 @@ app.post('/pause', (req, res) => {
 	/* istanbul ignore if */
 	if (player.running) {
 		player.pause();
+	}
+
+	res.sendStatus(200);
+
+});
+
+// Skips to the next song in the queue.
+app.post('/next', (req, res) => {
+
+	let next = queue.next();
+
+	if (next) {
+
+		/* istanbul ignore if */
+		if (player.running) {
+			player.quit();
+		}
+
+		player.newSource(next.url);
+
+	}
+
+	res.sendStatus(200);
+
+});
+
+// Skips to the previous song in the queue.
+app.post('/previous', (req, res) => {
+
+	let previous = queue.previous();
+
+	if (previous) {
+
+		/* istanbul ignore if */
+		if (player.running) {
+			player.quit();
+		}
+
+		player.newSource(previous.url);
+
 	}
 
 	res.sendStatus(200);
