@@ -13,6 +13,7 @@ let Queue = require('./queue');
 let app = express();
 let player = Omx();
 let queue = Queue();
+app.locals.queue = queue;
 
 
 // ----- Routing ----- //
@@ -81,6 +82,14 @@ app.post('/previous', (req, res) => {
 
 });
 
+// Catches error and sends 500.
+app.use((err, req, res, next) => {
+
+	console.error(err.stack);
+	res.status(500).send('Something broke!');
+
+});
+
 
 // ----- Run ----- //
 
@@ -91,4 +100,7 @@ let server = app.listen(5000, () => {
 
 // ----- Exports ----- //
 
-module.exports = server;
+module.exports = {
+	app: app,
+	server: server
+};

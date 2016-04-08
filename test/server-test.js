@@ -17,20 +17,20 @@ describe('Server', function () {
 	});
 
 	afterEach(function () {
-		server.close();
+		server.server.close();
 	});
 
 	describe('omxplayer controls', function () {
 
 		it('should respond with ok for /play', function (done) {
 
-			request(server).post('/play').expect(200, done);
+			request(server.server).post('/play').expect(200, done);
 
 		});
 
 		it('should respond with ok for /pause', function (done) {
 
-			request(server).post('/pause').expect(200, done);
+			request(server.server).post('/pause').expect(200, done);
 
 		});
 
