@@ -17,6 +17,7 @@ let player = Omx();
 app.post('/play', (req, res) => {
 
 	if (player.running) {
+		/* istanbul ignore next */
 		player.play();
 	}
 
@@ -28,6 +29,7 @@ app.post('/play', (req, res) => {
 app.post('/pause', (req, res) => {
 
 	if (player.running) {
+		/* istanbul ignore next */
 		player.pause();
 	}
 
