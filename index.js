@@ -14,18 +14,35 @@ let player = Omx();
 // ----- Routing ----- //
 
 // Plays the file in omxplayer.
-app.post('/play', (res, rej) => {
-	player.play();
+app.post('/play', (req, res) => {
+
+	if (player.running) {
+		player.play();
+	}
+
+	res.sendStatus(200);
+
 });
 
 // Pauses the file in omxplayer.
-app.post('/pause', (res, rej) => {
-	player.pause();
+app.post('/pause', (req, res) => {
+
+	if (player.running) {
+		player.pause();
+	}
+
+	res.sendStatus(200);
+
 });
 
 
 // ----- Run ----- //
 
-app.listen(5000, () => {
+let server = app.listen(5000, () => {
 	console.log('Running on 5000');
 });
+
+
+// ----- Exports ----- //
+
+module.exports = server;
