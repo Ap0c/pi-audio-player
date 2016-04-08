@@ -67,4 +67,36 @@ describe('Queue', function () {
 
 	});
 
+	describe('#next', function () {
+
+		it('should return null for an empty queue', function () {
+
+			let result = queue.next();
+			expect(result).to.be.null;
+
+		});
+
+		it('should return the next value in the queue', function () {
+
+			let toAppend = [{ a: 1 }, { b: 2 }];
+			queue.append(toAppend);
+
+			let next = queue.next();
+			expect(next).to.eql(toAppend[1]);
+
+		});
+
+		it('should return null once at the end of the queue', function () {
+
+			let toAppend = [{ a: 1 }, { b: 2 }];
+			queue.append(toAppend);
+
+			queue.next();
+			let next = queue.next();
+			expect(next).to.be.null;
+
+		});
+
+	});
+
 });
