@@ -16,8 +16,8 @@ let player = Omx();
 // Plays the file in omxplayer.
 app.post('/play', (req, res) => {
 
+	/* istanbul ignore if */
 	if (player.running) {
-		/* istanbul ignore next */
 		player.play();
 	}
 
@@ -28,8 +28,8 @@ app.post('/play', (req, res) => {
 // Pauses the file in omxplayer.
 app.post('/pause', (req, res) => {
 
+	/* istanbul ignore if */
 	if (player.running) {
-		/* istanbul ignore next */
 		player.pause();
 	}
 
