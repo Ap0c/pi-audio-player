@@ -4,12 +4,16 @@
   "description": "Network audio file player designed to run on the Raspberry Pi, using omxplayer.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/mocha/bin/mocha"
   },
   "author": "Ap0c",
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.4",
     "node-omxplayer": "^0.2.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }

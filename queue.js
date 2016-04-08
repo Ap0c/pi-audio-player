@@ -1,66 +1,75 @@
 'use strict';
 
-// ----- Setup ----- //
+module.exports = function Queue () {
 
-let queue = [];
-let nowPlaying = null;
+	// ----- Setup ----- //
+
+	let queue = [];
+	let nowPlaying = null;
 
 
-// ----- Functions ----- //
+	// ----- Functions ----- //
 
-// Returns the next song, or null.
-function next () {
+	// Returns the next song, or null.
+	function next () {
 
-	if (nowPlaying < queue.length - 1) {
+		if (nowPlaying < queue.length - 1) {
 
-		nowPlaying++;
-		return queue[nowPlaying];
+			nowPlaying++;
+			return queue[nowPlaying];
 
-	}
+		}
 
-	return null;
-
-}
-
-// Returns the previous song, or null.
-function previous () {
-
-	if (nowPlaying > 0) {
-
-		nowPlaying--;
-		return queue[nowPlaying];
+		return null;
 
 	}
 
-	return null;
+	// Returns the previous song, or null.
+	function previous () {
 
-}
+		if (nowPlaying > 0) {
 
-// Clears the queue.
-function clear () {
+			nowPlaying--;
+			return queue[nowPlaying];
 
-	queue = [];
-	nowPlaying = null;
+		}
 
-}
+		return null;
 
-// Adds items to the play queue.
-function append (items) {
-	queue.push(items);
-}
+	}
 
-// Returns the up next items from the queue, including the now playing item.
-function get () {
-	return queue.slice(nowPlaying);
-}
+	// Clears the queue.
+	function clear () {
 
+		queue = [];
+		nowPlaying = null;
 
-// ----- Exports ----- //
+	}
 
-module.exports = {
-	next: next,
-	previous: previous,
-	clear: clear,
-	append: append,
-	get: get
+	// Adds items to the play queue.
+	function append (items) {
+
+		if (Array.isArray(items)) {
+			queue = queue.concat(items);
+		} else {
+			queue.push(items);
+		}
+
+	}
+
+	// Returns the up next items from the queue, including the now playing item.
+	function get () {
+		return queue.slice(nowPlaying);
+	}
+
+	// ----- Constructor ----- //
+
+	return {
+		next: next,
+		previous: previous,
+		clear: clear,
+		append: append,
+		get: get
+	};
+
 };
