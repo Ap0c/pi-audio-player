@@ -56,7 +56,6 @@ app.post('/next', (req, res) => {
 			player.quit();
 		}
 
-		/* istanbul ignore next */
 		player.newSource(next.url);
 
 	}
@@ -77,7 +76,6 @@ app.post('/previous', (req, res) => {
 			player.quit();
 		}
 
-		/* istanbul ignore next */
 		player.newSource(previous.url);
 
 	}
