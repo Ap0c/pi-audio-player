@@ -128,6 +128,38 @@ describe('Server', function () {
 
 		});
 
+		it('should give an error for /queue put without body', function (done) {
+
+			request(server.server).put('/queue').expect(400, (err, res) => {
+
+				if (err) throw err;
+
+				expect(res.text).to.equal("Expected property 'queue'.");
+				done();
+
+			});
+
+		});
+
+		it('should give an error for incorrect queue items', function (done) {
+
+			let reqBody = { queue: [{ a: 1 }] };
+
+			request(server.server)
+				.put('/queue')
+				.set('Content-Type', 'application/json')
+				.send(reqBody)
+				.expect(400, (err, res) => {
+
+				if (err) throw err;
+
+				expect(res.text).to.equal("All items must have 'url' property.");
+				done();
+
+			});
+
+		});
+
 	});
 
 });

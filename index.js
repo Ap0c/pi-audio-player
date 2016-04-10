@@ -93,8 +93,6 @@ app.route('/queue')
 })
 .put(jsonParser, (req, res) => {
 
-	if (!req.body) return res.status(400).send('Expected a json body.');
-
 	let toAdd = req.body;
 
 	if (!toAdd.queue) return res.status(400).send("Expected property 'queue'.");
