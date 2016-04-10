@@ -17,7 +17,22 @@ let queue = Queue();
 let jsonParser = bodyParser.json();
 app.locals.queue = queue;
 
+
+// ----- Player ----- //
+
 player.on('error', console.error);
+
+player.on('close', () => {
+
+	let next = queue.next();
+
+	if (next) {
+		player.newSource(next.url);
+	} else {
+		queue.clear();
+	}
+
+});
 
 
 // ----- Routing ----- //
@@ -97,12 +112,19 @@ app.route('/queue')
 
 	if (!toAdd.queue) return res.status(400).send("Expected property 'queue'.");
 
+	let queueLength = queue.get().length;
 	let result = queue.append(toAdd.queue);
 
 	if (!result) {
 		res.status(400).send("All items must have 'url' property.");
 	} else {
+
+		if (queueLength === 0) {
+			player.newSource(queue.get()[0].url);
+		}
+
 		res.sendStatus(201);
+
 	}
 
 })
