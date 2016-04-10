@@ -4,48 +4,41 @@
 
 let expect = require('chai').expect;
 let request = require('supertest');
+let server = require('../server');
 
 
 // ----- Tests ----- //
 
 describe('Server', function () {
 
-	let firstQueue = [{ url: 1 }, { url: 2 }];
-	let secondQueue = [{ url: 3 }, { url: 4 }];
+	let dummyQueue = [{ url: 1 }, { url: 2 }];
 
 	describe('omxplayer controls', function () {
 
-		let server = null;
-
-		beforeEach(function () {
-			server = require('../index.js');
-		});
-
-		afterEach(function () {
-			server.server.close();
-		});
+		let app = server();
+		let req = request(app);
 
 		it('should respond with ok for /play', function (done) {
 
-			request(server.server).post('/play').expect(200, done);
+			req.post('/play').expect(200, done);
 
 		});
 
 		it('should respond with ok for /pause', function (done) {
 
-			request(server.server).post('/pause').expect(200, done);
+			req.post('/pause').expect(200, done);
 
 		});
 
 		it('should respond with ok for empty /next', function (done) {
 
-			request(server.server).post('/next').expect(200, done);
+			req.post('/next').expect(200, done);
 
 		});
 
 		it('should respond with ok for empty /previous', function (done) {
 
-			request(server.server).post('/previous').expect(200, done);
+			req.post('/previous').expect(200, done);
 
 		});
 
@@ -53,21 +46,15 @@ describe('Server', function () {
 
 	describe('queue movement', function () {
 
-		let server = require('../index.js');
-
-		before(function () {
-			server.app.locals.queue.append(firstQueue);
-		});
-
-		after(function () {
-			server.server.close();
-		});
-
 		it('should update the queue on /next', function (done) {
 
-			request(server.server).post('/next').expect(200, () => {
+			let app = server();
+			let req = request(app);
+			app.locals.queue.append(dummyQueue);
 
-				expect(server.app.locals.queue.get()[0]).to.eql(firstQueue[1]);
+			req.post('/next').expect(200, () => {
+
+				expect(app.locals.queue.get()[0]).to.eql(dummyQueue[1]);
 				done();
 
 			});
@@ -76,9 +63,13 @@ describe('Server', function () {
 
 		it('should update the queue on /previous', function (done) {
 
-			request(server.server).post('/previous').expect(200, () => {
+			let app = server();
+			let req = request(app);
+			app.locals.queue.append(dummyQueue);
 
-				expect(server.app.locals.queue.get()).to.eql(firstQueue);
+			req.post('/previous').expect(200, () => {
+
+				expect(app.locals.queue.get()).to.eql(dummyQueue);
 				done();
 
 			});
@@ -89,17 +80,16 @@ describe('Server', function () {
 
 	describe('queue route', function () {
 
-		let server = require('../index.js');
-
-		after(function () {
-			server.server.close();
-		});
-
 		it('should get the queue on /queue', function (done) {
 
-			request(server.server).get('/queue').expect(200, (err, res) => {
+			let app = server();
+			let req = request(app);
+			app.locals.queue.append(dummyQueue);
+
+			req.get('/queue').expect(200, (err, res) => {
 
 				if (err) throw err;
+
 				expect(res.body.queue).to.eql([{ url: 1 }, { url: 2 }]);
 				done();
 
@@ -109,28 +99,51 @@ describe('Server', function () {
 
 		it('should put items into the queue on /queue', function (done) {
 
-			let reqBody = { queue: secondQueue };
+			let app = server();
+			let req = request(app);
+			let reqBody = { queue: dummyQueue };
 
-			request(server.server)
-				.put('/queue')
+			req.put('/queue')
 				.set('Content-Type', 'application/json')
 				.send(reqBody)
 				.expect(201, (err, res) => {
 
+					if (err) throw err;
+
+					let queue = app.locals.queue.get();
+					expect(queue).to.eql(dummyQueue);
+					done();
+
+			});
+
+		});
+
+		it('should clear the queue on /queue delete', function (done) {
+
+			let app = server();
+			let req = request(app);
+
+			req.delete('/queue').expect(200, (err, res) => {
+
 				if (err) throw err;
 
-				expect(server.app.locals.queue.get())
-					.to.eql(firstQueue.concat(secondQueue));
-
+				expect(app.locals.queue.get()).to.eql([]);
 				done();
 
 			});
 
 		});
 
+	});
+
+	describe('queue errors', function () {
+
+		let app = server();
+		let req = request(app);
+
 		it('should give an error for /queue put without body', function (done) {
 
-			request(server.server).put('/queue').expect(400, (err, res) => {
+			req.put('/queue').expect(400, (err, res) => {
 
 				if (err) throw err;
 
@@ -145,29 +158,16 @@ describe('Server', function () {
 
 			let reqBody = { queue: [{ a: 1 }] };
 
-			request(server.server)
-				.put('/queue')
+			req.put('/queue')
 				.set('Content-Type', 'application/json')
 				.send(reqBody)
 				.expect(400, (err, res) => {
 
-				if (err) throw err;
+					if (err) throw err;
 
-				expect(res.text).to.equal("All items must have 'url' property.");
-				done();
-
-			});
-
-		});
-
-		it('should clear the queue on /queue delete', function (done) {
-
-			request(server.server).delete('/queue').expect(200, (err, res) => {
-
-				if (err) throw err;
-
-				expect(server.app.locals.queue.get()).to.eql([]);
-				done();
+					let errMessage = "All items must have 'url' property.";
+					expect(res.text).to.equal(errMessage);
+					done();
 
 			});
 
