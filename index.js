@@ -105,6 +105,12 @@ app.route('/queue')
 		res.sendStatus(201);
 	}
 
+})
+.delete((req, res) => {
+
+	queue.clear();
+	res.sendStatus(200);
+
 });
 
 // Catches error and sends 500.

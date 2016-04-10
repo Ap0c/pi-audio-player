@@ -160,6 +160,19 @@ describe('Server', function () {
 
 		});
 
+		it('should clear the queue on /queue delete', function (done) {
+
+			request(server.server).delete('/queue').expect(200, (err, res) => {
+
+				if (err) throw err;
+
+				expect(server.app.locals.queue.get()).to.eql([]);
+				done();
+
+			});
+
+		});
+
 	});
 
 });
