@@ -11,16 +11,22 @@ module.exports = function Queue () {
 	// ----- Functions ----- //
 
 	// Adds an item to queue if valid and returns true, else returns false.
-	function push (item) {
+	function push (items) {
 
-		if (item.hasOwnProperty('url')) {
+		let toQueue = [];
 
-			queue.push(item);
-			return true;
+		for (let item of items) {
+
+			if (item.hasOwnProperty('url')) {
+				toQueue.push(item);
+			} else {
+				return false;
+			}
 
 		}
 
-		return false;
+		queue = queue.concat(toQueue);
+		return true;
 
 	}
 
@@ -63,17 +69,9 @@ module.exports = function Queue () {
 	// Adds items to the play queue.
 	function append (items) {
 
-		if (Array.isArray(items)) {
+		if (Array.isArray(items)) return push(items);
 
-			for (let item of items) {
-				if (!push(item)) return false;
-			}
-
-			return true;
-
-		}
-
-		return push(items);
+		return push([items]);
 
 	}
 
