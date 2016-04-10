@@ -99,7 +99,13 @@ app.route('/queue')
 
 	if (!toAdd.queue) return res.status(400).send("Expected property 'queue'.");
 
-	queue.append(toAdd.queue);
+	let result = queue.append(toAdd.queue);
+
+	if (!result) {
+		res.status(400).send("All items must have 'url' property.");
+	} else {
+		res.sendStatus(201);
+	}
 
 });
 

@@ -10,6 +10,9 @@ let request = require('supertest');
 
 describe('Server', function () {
 
+	let firstQueue = [{ url: 1 }, { url: 2 }];
+	let secondQueue = [{ url: 3 }, { url: 4 }];
+
 	describe('omxplayer controls', function () {
 
 		let server = null;
@@ -48,13 +51,12 @@ describe('Server', function () {
 
 	});
 
-	describe('queue management', function () {
+	describe('queue movement', function () {
 
 		let server = require('../index.js');
-		let toAppend = [{ url: 1 }, { url: 2 }];
 
 		before(function () {
-			server.app.locals.queue.append(toAppend);
+			server.app.locals.queue.append(firstQueue);
 		});
 
 		after(function () {
@@ -65,7 +67,7 @@ describe('Server', function () {
 
 			request(server.server).post('/next').expect(200, () => {
 
-				expect(server.app.locals.queue.get()[0]).to.eql(toAppend[1]);
+				expect(server.app.locals.queue.get()[0]).to.eql(firstQueue[1]);
 				done();
 
 			});
@@ -76,7 +78,50 @@ describe('Server', function () {
 
 			request(server.server).post('/previous').expect(200, () => {
 
-				expect(server.app.locals.queue.get()).to.eql(toAppend);
+				expect(server.app.locals.queue.get()).to.eql(firstQueue);
+				done();
+
+			});
+
+		});
+
+	});
+
+	describe('queue route', function () {
+
+		let server = require('../index.js');
+
+		after(function () {
+			server.server.close();
+		});
+
+		it('should get the queue on /queue', function (done) {
+
+			request(server.server).get('/queue').expect(200, (err, res) => {
+
+				if (err) throw err;
+				expect(res.body.queue).to.eql([{ url: 1 }, { url: 2 }]);
+				done();
+
+			});
+
+		});
+
+		it('should put items into the queue on /queue', function (done) {
+
+			let reqBody = { queue: secondQueue };
+
+			request(server.server)
+				.put('/queue')
+				.set('Content-Type', 'application/json')
+				.send(reqBody)
+				.expect(201, (err, res) => {
+
+				if (err) throw err;
+
+				expect(server.app.locals.queue.get())
+					.to.eql(firstQueue.concat(secondQueue));
+
 				done();
 
 			});
