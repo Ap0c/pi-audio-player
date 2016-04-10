@@ -15,6 +15,8 @@ let player = Omx();
 let queue = Queue();
 app.locals.queue = queue;
 
+player.on('error', console.error);
+
 
 // ----- Routing ----- //
 
@@ -54,6 +56,7 @@ app.post('/next', (req, res) => {
 			player.quit();
 		}
 
+		/* istanbul ignore next */
 		player.newSource(next.url);
 
 	}
@@ -74,6 +77,7 @@ app.post('/previous', (req, res) => {
 			player.quit();
 		}
 
+		/* istanbul ignore next */
 		player.newSource(previous.url);
 
 	}
@@ -83,6 +87,7 @@ app.post('/previous', (req, res) => {
 });
 
 // Catches error and sends 500.
+/* istanbul ignore next */
 app.use((err, req, res, next) => {
 
 	console.error(err.stack);
