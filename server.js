@@ -26,6 +26,7 @@ module.exports = function () {
 	player.on('close', () => {
 
 		let next = queue.next();
+		console.log('here');
 
 		if (next) {
 			player.newSource(next.url);
@@ -111,7 +112,9 @@ module.exports = function () {
 
 		let toAdd = req.body;
 
-		if (!toAdd.queue) return res.status(400).send("Expected property 'queue'.");
+		if (!toAdd.queue) {
+			return res.status(400).send("Expected property 'queue'.");
+		}
 
 		let queueLength = queue.get().length;
 		let result = queue.append(toAdd.queue);
@@ -120,6 +123,7 @@ module.exports = function () {
 			res.status(400).send("All items must have 'url' property.");
 		} else {
 
+			/* istanbul ignore else */
 			if (queueLength === 0) {
 				player.newSource(queue.get()[0].url);
 			}

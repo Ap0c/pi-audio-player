@@ -66,6 +66,7 @@ describe('Server', function () {
 			let app = server();
 			let req = request(app);
 			app.locals.queue.append(dummyQueue);
+			app.locals.queue.next();
 
 			req.post('/previous').expect(200, () => {
 
