@@ -51,7 +51,7 @@ describe('Server', function () {
 	describe('queue management', function () {
 
 		let server = require('../index.js');
-		let toAppend = [{ a: 1 }, { b: 2 }];
+		let toAppend = [{ url: 1 }, { url: 2 }];
 
 		before(function () {
 			server.app.locals.queue.append(toAppend);

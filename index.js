@@ -3,6 +3,7 @@
 // ----- Requires ----- //
 
 let express = require('express');
+let bodyParser = require('body-parser');
 let Omx = require('node-omxplayer');
 
 let Queue = require('./queue');
@@ -13,6 +14,7 @@ let Queue = require('./queue');
 let app = express();
 let player = Omx();
 let queue = Queue();
+let jsonParser = bodyParser.json();
 app.locals.queue = queue;
 
 player.on('error', console.error);
@@ -81,6 +83,23 @@ app.post('/previous', (req, res) => {
 	}
 
 	res.sendStatus(200);
+
+});
+
+// Handles interaction with the queue.
+app.route('/queue')
+.get((req, res) => {
+	res.json({ queue: queue.get() });
+})
+.put(jsonParser, (req, res) => {
+
+	if (!req.body) return res.status(400).send('Expected a json body.');
+
+	let toAdd = req.body;
+
+	if (!toAdd.queue) return res.status(400).send("Expected property 'queue'.");
+
+	queue.append(toAdd.queue);
 
 });
 

@@ -10,6 +10,20 @@ module.exports = function Queue () {
 
 	// ----- Functions ----- //
 
+	// Adds an item to queue if valid and returns true, else returns false.
+	function push (item) {
+
+		if (item.hasOwnProperty('url')) {
+
+			queue.push(item);
+			return true;
+
+		}
+
+		return false;
+
+	}
+
 	// Returns the next song, or null.
 	function next () {
 
@@ -50,10 +64,16 @@ module.exports = function Queue () {
 	function append (items) {
 
 		if (Array.isArray(items)) {
-			queue = queue.concat(items);
-		} else {
-			queue.push(items);
+
+			for (let item of items) {
+				if (!push(item)) return false;
+			}
+
+			return true;
+
 		}
+
+		return push(items);
 
 	}
 

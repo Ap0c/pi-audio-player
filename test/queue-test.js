@@ -31,7 +31,7 @@ describe('Queue', function () {
 
 		it('should add an item to the queue', function () {
 
-			let toAppend = { a: 1, b: 2 };
+			let toAppend = { url: 1, a: 2 };
 			queue.append(toAppend);
 
 			let items = queue.get();
@@ -41,7 +41,7 @@ describe('Queue', function () {
 
 		it('should append multiple items to the queue', function () {
 
-			let toAppend = [{ a: 1 }, { b: 2 }];
+			let toAppend = [{ url: 1 }, { url: 2 }];
 			queue.append(toAppend);
 
 			let items = queue.get();
@@ -55,7 +55,7 @@ describe('Queue', function () {
 
 		it('should clear the items in the queue', function () {
 
-			let toAppend = [{ a: 1 }, { b: 2 }];
+			let toAppend = [{ url: 1 }, { url: 2 }];
 			queue.append(toAppend);
 
 			queue.clear();
@@ -78,7 +78,7 @@ describe('Queue', function () {
 
 		it('should return the next value in the queue', function () {
 
-			let toAppend = [{ a: 1 }, { b: 2 }];
+			let toAppend = [{ url: 1 }, { url: 2 }];
 			queue.append(toAppend);
 
 			let next = queue.next();
@@ -88,7 +88,7 @@ describe('Queue', function () {
 
 		it('should return null once at the end of the queue', function () {
 
-			let toAppend = [{ a: 1 }, { b: 2 }];
+			let toAppend = [{ url: 1 }, { url: 2 }];
 			queue.append(toAppend);
 
 			queue.next();
@@ -103,7 +103,7 @@ describe('Queue', function () {
 
 		it('should return the previous value in the queue', function () {
 
-			let toAppend = [{ a: 1 }, { b: 2 }];
+			let toAppend = [{ url: 1 }, { url: 2 }];
 			queue.append(toAppend);
 
 			queue.next();
@@ -114,7 +114,7 @@ describe('Queue', function () {
 
 		it('should return null at the start of the queue', function () {
 
-			let toAppend = [{ a: 1 }, { b: 2 }];
+			let toAppend = [{ url: 1 }, { url: 2 }];
 			queue.append(toAppend);
 
 			let previous = queue.previous();
