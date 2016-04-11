@@ -26,7 +26,6 @@ module.exports = function () {
 	player.on('close', () => {
 
 		let next = queue.next();
-		console.log('here');
 
 		if (next) {
 			player.newSource(next.url);

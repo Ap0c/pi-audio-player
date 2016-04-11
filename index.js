@@ -2,16 +2,13 @@
 
 // ----- Requires ----- //
 
-let server = require('./server');
-
-
-// ----- Setup ----- //
-
-let app = server();
+let app = require('./server')();
+let http = require('http').Server(app);
+let io = require('./socket')(http);
 
 
 // ----- Run ----- //
 
-app.listen(5000, () => {
+http.listen(5000, () => {
 	console.log('Running on 5000');
 });
