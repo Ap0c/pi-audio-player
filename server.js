@@ -25,7 +25,12 @@ module.exports = function () {
 
 	// ----- Player ----- //
 
-	player.on('error', console.error);
+	player.on('error', (info) => {
+
+		io.emit('error', info);
+		console.error(info);
+
+	});
 
 	player.on('close', () => {
 
@@ -50,6 +55,7 @@ module.exports = function () {
 			player.play();
 		}
 
+		io.emit('play');
 		res.sendStatus(200);
 
 	});
@@ -62,6 +68,7 @@ module.exports = function () {
 			player.pause();
 		}
 
+		io.emit('pause');
 		res.sendStatus(200);
 
 	});
@@ -82,6 +89,7 @@ module.exports = function () {
 
 		}
 
+		io.emit('skip');
 		res.sendStatus(200);
 
 	});
@@ -102,6 +110,7 @@ module.exports = function () {
 
 		}
 
+		io.emit('previous');
 		res.sendStatus(200);
 
 	});
@@ -131,6 +140,7 @@ module.exports = function () {
 				player.newSource(queue.get()[0].url);
 			}
 
+			io.emit('queue-updated');
 			res.sendStatus(201);
 
 		}
@@ -139,6 +149,7 @@ module.exports = function () {
 	.delete((req, res) => {
 
 		queue.clear();
+		io.emit('queue-cleared');
 		res.sendStatus(200);
 
 	});
