@@ -15,7 +15,7 @@ describe('Server', function () {
 
 	describe('omxplayer controls', function () {
 
-		let app = server();
+		let app = server().app;
 		let req = request(app);
 
 		it('should respond with ok for /play', function (done) {
@@ -48,7 +48,7 @@ describe('Server', function () {
 
 		it('should update the queue on /next', function (done) {
 
-			let app = server();
+			let app = server().app;
 			let req = request(app);
 			app.locals.queue.append(dummyQueue);
 
@@ -63,7 +63,7 @@ describe('Server', function () {
 
 		it('should update the queue on /previous', function (done) {
 
-			let app = server();
+			let app = server().app;
 			let req = request(app);
 			app.locals.queue.append(dummyQueue);
 			app.locals.queue.next();
@@ -83,7 +83,7 @@ describe('Server', function () {
 
 		it('should get the queue on /queue', function (done) {
 
-			let app = server();
+			let app = server().app;
 			let req = request(app);
 			app.locals.queue.append(dummyQueue);
 
@@ -100,7 +100,7 @@ describe('Server', function () {
 
 		it('should put items into the queue on /queue', function (done) {
 
-			let app = server();
+			let app = server().app;
 			let req = request(app);
 			let reqBody = { queue: dummyQueue };
 
@@ -121,7 +121,7 @@ describe('Server', function () {
 
 		it('should clear the queue on /queue delete', function (done) {
 
-			let app = server();
+			let app = server().app;
 			let req = request(app);
 
 			req.delete('/queue').expect(200, (err, res) => {
@@ -139,7 +139,7 @@ describe('Server', function () {
 
 	describe('queue errors', function () {
 
-		let app = server();
+		let app = server().app;
 		let req = request(app);
 
 		it('should give an error for /queue put without body', function (done) {

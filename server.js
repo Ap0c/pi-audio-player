@@ -2,17 +2,22 @@
 
 // ----- Requires ----- //
 
+let http = require('http');
 let express = require('express');
 let bodyParser = require('body-parser');
 let Omx = require('node-omxplayer');
 
 let Queue = require('./queue');
+let socket = require('socket.io');
 
-module.exports = function (player) {
+module.exports = function () {
 
 	// ----- Setup ----- //
 
 	let app = express();
+	let server = http.Server(app);
+	let io = socket(http);
+	let player = Omx();
 	let queue = Queue();
 	let jsonParser = bodyParser.json();
 	app.locals.queue = queue;
@@ -149,6 +154,6 @@ module.exports = function (player) {
 
 	// ----- Constructor ----- //
 
-	return app;
+	return { app: app, server: server };
 
 };
