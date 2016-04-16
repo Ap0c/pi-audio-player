@@ -98,13 +98,13 @@ describe('Server', function () {
 
 		});
 
-		it('should put items into the queue on /queue', function (done) {
+		it('should post items into the queue on /queue', function (done) {
 
 			let app = server().app;
 			let req = request(app);
 			let reqBody = { queue: dummyQueue };
 
-			req.put('/queue')
+			req.post('/queue')
 				.set('Content-Type', 'application/json')
 				.send(reqBody)
 				.expect(201, (err, res) => {
@@ -142,9 +142,9 @@ describe('Server', function () {
 		let app = server().app;
 		let req = request(app);
 
-		it('should give an error for /queue put without body', function (done) {
+		it('should give an error for /queue post without body', function (done) {
 
-			req.put('/queue').expect(400, (err, res) => {
+			req.post('/queue').expect(400, (err, res) => {
 
 				if (err) throw err;
 
@@ -159,7 +159,7 @@ describe('Server', function () {
 
 			let reqBody = { queue: [{ a: 1 }] };
 
-			req.put('/queue')
+			req.post('/queue')
 				.set('Content-Type', 'application/json')
 				.send(reqBody)
 				.expect(400, (err, res) => {
