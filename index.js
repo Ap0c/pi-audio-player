@@ -2,9 +2,10 @@
 
 // ----- Requires ----- //
 
-let app = require('./server')();
+let player = Omx();
+let app = require('./server')(player);
 let http = require('http').Server(app);
-let io = require('./socket')(http);
+let io = require('./socket')(http, player);
 
 
 // ----- Run ----- //

@@ -8,12 +8,11 @@ let Omx = require('node-omxplayer');
 
 let Queue = require('./queue');
 
-module.exports = function () {
+module.exports = function (player) {
 
 	// ----- Setup ----- //
 
 	let app = express();
-	let player = Omx();
 	let queue = Queue();
 	let jsonParser = bodyParser.json();
 	app.locals.queue = queue;

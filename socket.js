@@ -7,7 +7,7 @@ let io = require('socket.io');
 
 // ----- Exports ----- //
 
-module.exports = function Socket (http) {
+module.exports = function Socket (http, player) {
 
 	// ----- Setup ----- //
 
