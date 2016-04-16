@@ -26,29 +26,37 @@ npm start`
 
 and the server will start on port 5000.
 
-## API
+## HTTP API
 
-### HTTP
+### /play
 
-#### /play - *POST*
+**POST** - *200 on success.*
 
 Sends a command for the player to begin playback of the current file.
 
-#### /pause - *POST*
+### /pause - *POST*
+
+**POST** - *200 on success.*
 
 Sends a command for the player to pause playback of the current file.
 
-#### /next - *POST*
+### /next - *POST*
+
+**POST** - *200 on success.*
 
 Skips to the next song in the queue.
 
-#### /previous - *POST*
+### /previous - *POST*
+
+**POST** - *200 on success.*
 
 Skips to the previous song in the queue.
 
-#### /queue - *GET*, *PUT*, *DELETE*
+### /queue
 
-- *GET* - Retrieves the current queue in JSON form:
+**GET** - *200 on success.*
+
+Retrieves the current queue in JSON form:
 
 ```
 { "queue": [] }
@@ -56,7 +64,9 @@ Skips to the previous song in the queue.
 
 where the first element is the currently playing item.
 
-- *PUT* - Send a JSON request to add a series of items to the queue, in the format:
+**POST** - *201 on success, 400 on request problem.*
+
+Send a JSON request to add a series of items to the queue, in the format:
 
 ```
 { "queue": [] }
@@ -64,7 +74,39 @@ where the first element is the currently playing item.
 
 All items must have a `url` property.
 
-- *DELETE* - Clears the current queue.
+**DELETE** - *200 on success.*
+
+Clears the current queue.
+
+## Websocket Events (socket.io)
+
+### play
+
+Signifies that a command has been sent to the server to start playback.
+
+### pause
+
+Signifies that a command has been sent to the server to pause playback.
+
+### skip
+
+Signifies that a command has been sent to the server to skip to the next item in the queue.
+
+### previous
+
+Signifies that a command has been sent to the server to return to the previous item in the queue.
+
+### queue-updated
+
+Signifies that the queue has been updated with new items.
+
+### queue-cleared
+
+Signifies that the queue has been cleared.
+
+### error
+
+Signifies an error on the server end, includes a message explaining the error.
 
 ## Development
 
