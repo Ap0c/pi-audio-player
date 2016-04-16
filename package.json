@@ -4,7 +4,8 @@
   "description": "Network audio file player designed to run on the Raspberry Pi, using omxplayer.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
+    "test": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha",
+    "start": "node index.js"
   },
   "author": "Ap0c",
   "license": "MIT",
